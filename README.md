@@ -72,7 +72,7 @@ Since the reading of BLOBs (binary large objects) is tricky, here follows a snip
         const unsigned char* blob = \
           reinterpret_cast<const unsigned char*>(sqlite3_column_blob(stmt, 4));
         // Get the number of blob bytes
-	    int blob_bytes = sqlite3_column_bytes(stmt, 4);
+	int blob_bytes = sqlite3_column_bytes(stmt, 4);
         // new vector of blob_bytes size + 2 for quotes
         std::vector<unsigned char>* file_blob = new std::vector<unsigned char>(blob_bytes+2);
         # insert leading quote
@@ -89,7 +89,7 @@ Since the reading of BLOBs (binary large objects) is tricky, here follows a snip
 Use the program for extracting of backuped files which could not be recovered otherwise.
 
 ### Usage:
-Click on "Open" left in the toolbar above to open an appropiate data base file. The Backup is structured in so-called domains. Down right there is now appearing a button "Export CSV...". Clicking will export the data base structure to an ';' separated CSV file, which can be read in a text editor or calculation program of your choice. Choosing a domain from the appearing Combobox will display further components of this domain. Double-clicking a row in the table opens a dialog where you can select the place for storing the requested file. If you know which domain entry you are looking for, enter a significant beginning of the text in the entry field of the combobox and press ENTER. This first entry which will match is then selected (sorry, in the moment still on the TODO list). Quit the program with "Quit" or closing the application window.
+Click on "Open" left in the toolbar above to open an appropiate data base file. The Backup is structured in so-called domains. Down right there is now appearing a button "Export CSV...". Clicking will export the data base structure to an ';' separated CSV file, which can be read in a text editor or calculation program of your choice. Choosing a domain from the appearing Combobox will display further components of this domain. Double-clicking a row in the table opens a dialog where you can select the place for storing the requested file. If you know which domain entry you are looking for, enter a significant beginning of the text in the entry field of the combobox and press ENTER. The first entry which will match is then selected. So typing in 'CameraRoll' will fetch the CameraRollDomain, where you find your stored images. Quit the program with "Quit" or closing the application window.
 
 ### Acknowledgements:
 - David Blache for some fundamentals about iOSBackup and his idea to export a CSV file.</br>
