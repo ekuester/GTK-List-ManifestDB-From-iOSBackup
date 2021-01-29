@@ -1,0 +1,14 @@
+﻿#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Version=1.1
+Name=iOSBackup View
+Name[de]=iOSBackup Ansicht
+Comment=See what is covered under the hood of IOS
+Comment[de]=Was verbirgt sich im iOSBackup
+Exec=gnome-terminal --geometry=16x5 --hide-menubar --working-directory=@pkgdatadir@ -- ./ManifestDBView
+Icon=manifestDBview
+Categories=Education
+StartupNotify=true
+Terminal=false
+

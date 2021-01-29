@@ -25,41 +25,48 @@
 //  The old code (in Swift, now abandoned) was rewritten as of July 25, 2018
 //  now in C++ with the GTK+ wrapper gtkmm, last changes October 2018
 //
-//  Copyright © 2016-2018 Erich Küster. All rights reserved.
+//  Copyright © 2016-2021 Erich Küster. All rights reserved.
 //
 
-#include "manifestDBwindow.h"
 #include "about.xpm"
+#include "manifestDBwindow.h"
 
-const Glib::ustring app_title = "Gtk+: iOS Backup - Read Manifest.db";
+const Glib::ustring app_title = N_("Gtk+: iOS Backup - Read Manifest.db");
 
 ManifestDBWindow::ManifestDBWindow(const Glib::RefPtr<Gtk::Application>& app)
 : m_VBox(Gtk::ORIENTATION_VERTICAL, 8),
-t_Toolbar(),
-t_ToolButtonOpen(Gtk::Stock::OPEN),
-t_ToolButtonQuit(Gtk::Stock::QUIT),
-t_ToolItemSpace(),
-t_ToolButtonAbout(Gtk::Stock::ABOUT), 
-//m_HBoxTop(Gtk::ORIENTATION_HORIZONTAL),
-m_Combo(true),//with entry if set true
-m_HBoxCombo(Gtk::ORIENTATION_HORIZONTAL),
-m_ScrolledWindow(),
-m_TextWindow(),
-m_StatusFrame(),
-m_Statusbar()
+  t_Toolbar(),
+  t_ToolButtonOpen(Gtk::Stock::OPEN),
+  t_ToolButtonQuit(Gtk::Stock::QUIT),
+  t_ToolItemSpace(),
+  t_ToolButtonAbout(Gtk::Stock::ABOUT), 
+  m_ExportButtonBox(Gtk::ORIENTATION_HORIZONTAL),
+  m_ButtonExport(_("Export CSV..."), true),
+  m_Combo(true),//with entry if set true
+  m_HBoxCombo(Gtk::ORIENTATION_HORIZONTAL),
+  m_HBoxBottom(Gtk::ORIENTATION_HORIZONTAL),
+  m_ScrolledWindow(),
+  m_TextWindow(),
+  m_StatusFrame(),
+  m_Statusbar()
 {
+    // Set up window with application icon and the top-level container
+    Glib::RefPtr<Gio::MemoryInputStream> stream = Gio::MemoryInputStream::create();
+    stream->add_data(icon_svg);
+    set_icon(Gdk::Pixbuf::create_from_stream(stream));
+    stream->close();
     set_title(app_title);
     set_border_width(5);
-    set_default_size(640, 480);
+    set_default_size(1024, 768);
     // horizontal tool bar above
     t_Toolbar.set_toolbar_style(Gtk::TOOLBAR_BOTH);
-    t_ToolButtonOpen.set_tooltip_text("Open data base");
+    t_ToolButtonOpen.set_tooltip_text(N_("Open data base"));
     t_ToolButtonOpen.signal_clicked().connect(sigc::mem_fun(*this,
         &ManifestDBWindow::on_button_open));
-    t_ToolButtonQuit.set_tooltip_text("Quit program");
+    t_ToolButtonQuit.set_tooltip_text(_("Exit program"));
     t_ToolButtonQuit.signal_clicked().connect(sigc::mem_fun(*this,
         &ManifestDBWindow::on_button_quit));
-    t_ToolButtonAbout.set_tooltip_text("About program");
+    t_ToolButtonAbout.set_tooltip_text(N_("About program"));
     t_ToolButtonAbout.signal_clicked().connect(sigc::mem_fun(*this,
         &ManifestDBWindow::on_button_about));
     t_Toolbar.append(t_ToolButtonOpen);
@@ -105,30 +112,11 @@ m_Statusbar()
     m_TextWindow.add(m_TextView);
     //Only show the scrollbars when they are necessary:
     m_TextWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-/*
-    //fill horizontal box
-    //ButtonBoxes to the left and right of vertical box
-    m_HBoxTop.pack_start(m_OpenButtonBox, Gtk::PACK_SHRINK);
-    m_HBoxTop.set_border_width(8);
-    m_OpenButtonBox.pack_start(m_ButtonOpen, Gtk::PACK_SHRINK);
-    m_OpenButtonBox.set_border_width(2);
-    m_OpenButtonBox.set_layout(Gtk::BUTTONBOX_START);
-    m_ButtonOpen.signal_clicked().connect(sigc::mem_fun(*this,
-            &ManifestDBWindow::on_button_open));
-    m_HBoxTop.pack_end(m_QuitButtonBox, Gtk::PACK_SHRINK);
-    m_HBoxTop.set_border_width(8);
-    m_QuitButtonBox.pack_start(m_ButtonQuit, Gtk::PACK_SHRINK);
-    m_QuitButtonBox.set_border_width(2);
-    m_QuitButtonBox.set_layout(Gtk::BUTTONBOX_END);
-    m_ButtonQuit.signal_clicked().connect(sigc::mem_fun(*this,
-            &ManifestDBWindow::on_button_quit));
-    m_VBox.pack_start(m_HBoxTop, Gtk::PACK_SHRINK); */
-    
     //Add the TreeView's view columns:
     //This number will be shown with the default numeric formatting.
-    m_TreeView.append_column("File ID", m_TableColumns.m_tablecol_fileID);
-    m_TreeView.append_column("File Path", m_TableColumns.m_tablecol_path);
-    m_TreeView.append_column("File Flags", m_TableColumns.m_tablecol_flags);
+    m_TreeView.append_column(_("File ID"), m_TableColumns.m_tablecol_fileID);
+    m_TreeView.append_column(_("File Path"), m_TableColumns.m_tablecol_path);
+    m_TreeView.append_column(_("File Flags"), m_TableColumns.m_tablecol_flags);
 
     //Make all the columns reorderable and resizable:
     //This is not necessary, but it's nice to show the feature.
@@ -140,12 +128,21 @@ m_Statusbar()
         //column->set_alignment(Gtk::ALIGN_FILL);
     }
     //Connect signal handler
-    m_TreeView.signal_row_activated().connect(sigc::mem_fun(*this,
-              &ManifestDBWindow::on_treeview_row_activated) );
+    m_TreeView.signal_row_activated().connect(sigc::mem_fun(*this, \
+      &ManifestDBWindow::on_treeview_row_activated) );
+
+    // add horizontal box for csv export
+    m_HBoxBottom.pack_end(m_ExportButtonBox, Gtk::PACK_SHRINK);
+    m_HBoxBottom.set_border_width(2);
+    m_ExportButtonBox.pack_start(m_ButtonExport, Gtk::PACK_SHRINK);
+    m_ExportButtonBox.set_border_width(2);
+    m_ExportButtonBox.set_layout(Gtk::BUTTONBOX_CENTER);
+    m_ButtonExport.signal_clicked().connect(sigc::mem_fun(*this, \
+      &ManifestDBWindow::on_button_write_csv));
 
     m_StatusFrame.add(m_Statusbar);
     m_VBox.pack_end(m_StatusFrame, Gtk::PACK_SHRINK);
-    m_ContextId = m_Statusbar.push("choose a data base, click Open", m_ContextId);
+    m_ContextId = m_Statusbar.push(_("choose a data base, click Open"), m_ContextId);
 
     //Add the vertical Box to the window.
     add(m_VBox);
@@ -155,9 +152,9 @@ m_Statusbar()
     m_Dialog.set_logo(Gdk::Pixbuf::create_from_xpm_data(about));
     m_Dialog.set_program_name(app_title);
     m_Dialog.set_size_request(480, -1);
-    m_Dialog.set_version("Version 1.1.3");
-    m_Dialog.set_copyright("Copyright © 2018 Erich Küster. All rights reserved.");
-    m_Dialog.set_comments("Read iOS Backup Data Base Manifest.db");
+    m_Dialog.set_version(_("Version 1.1.4"));
+    m_Dialog.set_copyright("Copyright © 2018-2021 Erich Küster. All rights reserved.");
+    m_Dialog.set_comments(_("Read and extract iOS Backup Data Base Manifest.db"));
     std::ifstream licenseFile("LICENSE");
     std::stringstream licenseStream;
     licenseStream << licenseFile.rdbuf();
@@ -186,22 +183,22 @@ ManifestDBWindow::~ManifestDBWindow() {
 
 string ManifestDBWindow::choose_database_file() {
     // File Open Dialog
-    Gtk::FileChooserDialog dialog("Select Manifest.db file",
+    Gtk::FileChooserDialog dialog(N_("Select Manifest.db file"),
             Gtk::FileChooserAction::FILE_CHOOSER_ACTION_OPEN);
     dialog.set_transient_for(*this);
 
     //Add response buttons the the dialog:
-    dialog.add_button("_Cancel", Gtk::ResponseType::RESPONSE_CANCEL);
-    dialog.add_button("_Open", Gtk::ResponseType::RESPONSE_OK);
+    dialog.add_button(_("Cancel"), Gtk::ResponseType::RESPONSE_CANCEL);
+    dialog.add_button(_("Open"), Gtk::ResponseType::RESPONSE_OK);
 
     //Add filters, so that only certain file types can be selected:
     auto filter_db = Gtk::FileFilter::create();
-    filter_db->set_name("Database files");
+    filter_db->set_name(_("Database files"));
     filter_db->add_pattern("*.db");
     dialog.add_filter(filter_db);
 
     auto filter_any = Gtk::FileFilter::create();
-    filter_any->set_name("Any files");
+    filter_any->set_name(_("Any files"));
     filter_any->add_pattern("*");
     dialog.add_filter(filter_any);
 
@@ -218,12 +215,12 @@ string ManifestDBWindow::choose_database_file() {
         }
         case Gtk::ResponseType::RESPONSE_CANCEL:
         {
-            m_ContextId = m_Statusbar.push("no data base chosen", m_ContextId);
+            m_ContextId = m_Statusbar.push(_("no data base chosen"), m_ContextId);
             break;
         }
         default:
         {
-            std::cout << "Unexpected button clicked." << std::endl;
+            std::cout << _("unexpected button clicked.") << std::endl;
             break;
         }
     }
@@ -237,7 +234,7 @@ void ManifestDBWindow::on_button_open() {
     pathURL = fileURL.substr(0, fileURL.find_last_of("/\\"));
     if (!fileURL.empty()) {
         //will be displayed when combobox become visible
-        display_status("backup data base was found at: ", fileURL);
+        display_status(_("backup data base was found at: "), fileURL);
         const char* filename = fileURL.c_str();
         if (backupItems.size() > 0) {
             backupItems.clear();
@@ -246,25 +243,33 @@ void ManifestDBWindow::on_button_open() {
         int result = sqlite3_open(filename, &sqliteDB);
         if (result == SQLITE_OK) {
             //cout << "Open database successfully" << endl;
-            const char* command = "select fileID, domain, relativePath, flags from Files";
+            const char* command = "select fileID, domain, relativePath, flags, file from Files";
             sqlite3_stmt *stmt;
             if (sqlite3_prepare_v2(sqliteDB, command, -1, &stmt, NULL) != SQLITE_OK) {
                 szErrMsg = sqlite3_errmsg(sqliteDB);
-                cout << "error preparing select: " << szErrMsg << endl;
+                cout << _("error preparing select: ") << szErrMsg << endl;
             } else {
                 while (sqlite3_step(stmt) == SQLITE_ROW) {
                     FileInfo* fileInfo = new FileInfo;
                     basic_string<unsigned char> item1 = sqlite3_column_text(stmt, 0);
                     fileInfo->fileID = string(item1.begin(), item1.end());
-                    // cout << "fileID: " << fileID << endl;
                     basic_string<unsigned char> item2 = sqlite3_column_text(stmt, 1);
                     fileInfo->domain = string(item2.begin(), item2.end());
-                    // cout << "domain: " << domain << endl;
                     basic_string<unsigned char> item3 = sqlite3_column_text(stmt, 2);
                     fileInfo->relativePath = string(item3.begin(), item3.end());
-                    // cout << "relativePath: " << relativePath << endl;
                     fileInfo->flags = sqlite3_column_int64(stmt, 3);
-                    // cout << "flags: " << fileInfo.flags << endl;
+                    const unsigned char* blob = \
+                      reinterpret_cast<const unsigned char*>(sqlite3_column_blob(stmt, 4));
+                    // Get the number of blob bytes
+	                int blob_bytes = sqlite3_column_bytes(stmt, 4);
+                    // new vector of blob_bytes size + 2 for quotes
+                    std::vector<unsigned char>* file_blob = new std::vector<unsigned char>(blob_bytes+2);
+                    (*file_blob)[0] = '\"';
+                    // copy blob data into vector
+                    //std::copy(blob, blob + blob_bytes, &((*file_blob)[1]));
+                    std::copy(blob, blob + blob_bytes, &(file_blob->at(1)));
+                    (*file_blob)[blob_bytes+1] = '\"';
+                    fileInfo->fileBlob = file_blob;
                     backupItems.push_back(fileInfo);
                 }
                 //cout << "added " << backupItems.size() << " backup items" << endl;
@@ -286,16 +291,17 @@ void ManifestDBWindow::on_button_open() {
                 //fill the ComboBox's Tree Model
                 Gtk::TreeModel::Row row = *(m_refComboTreeModel->append());
                 row[m_Columns.m_col_id] = 1;
-                row[m_Columns.m_col_domain] = "Please select domain to display";
+                row[m_Columns.m_col_domain] = _("Please select domain to display");
                 //remove child(ren) from main window
                 remove();
+                m_VBox.remove(m_HBoxBottom);
                 m_VBox.remove(m_HBoxCombo);
                 m_HBoxCombo.remove(m_Combo);
                 // first row is active
                 m_Combo.set_active(0);
-                //add the combobox to a horizontal box, horizontally centered
+                // add the combobox to a horizontal box, horizontally centered
                 m_HBoxCombo.pack_start(m_Combo, Gtk::PACK_EXPAND_WIDGET);
-                //add combobox row for every backupItem object
+                // add combobox row for every backupItem object
                 int i = 2;
                 for (auto filteredItem : filteredItems) {
                     Gtk::TreeModel::Row row = *(m_refComboTreeModel->append());
@@ -305,25 +311,52 @@ void ManifestDBWindow::on_button_open() {
                 add(m_VBox);
                 m_VBox.pack_start(m_HBoxCombo, Gtk::PACK_SHRINK);
                 m_VBox.pack_start(m_ScrolledWindow);
-                m_VBox.pack_end(m_TextWindow);
+                m_VBox.pack_start(m_TextWindow);
+                m_VBox.pack_end(m_HBoxBottom, Gtk::PACK_SHRINK);
                 m_VBox.set_border_width(8);
                 show_all_children();
-            }
+           }
             if (sqlite3_finalize(stmt) != SQLITE_OK) {
                 szErrMsg = sqlite3_errmsg(sqliteDB);
-                cout << "error finalizing prepared statement: " << szErrMsg << endl;
+                cout << _("error finalizing prepared statement: ") << szErrMsg << endl;
             }
             stmt = NULL;
         } else {
-            m_ContextId = m_Statusbar.push("Can't open database", m_ContextId);
+            m_ContextId = m_Statusbar.push(_("Can't open database"), m_ContextId);
         }
         //close database
         if (sqliteDB) {
             sqlite3_close(sqliteDB);
-            m_ContextId = m_Statusbar.push("data base closed", m_ContextId);
+            m_ContextId = m_Statusbar.push(_("data base closed"), m_ContextId);
         }
     }
 }
+
+void ManifestDBWindow::on_button_write_csv() {
+    // export data records into .csv file
+    ofstream infoFile;
+    // simple beginning: save file in same directory
+    infoFile.open("Manifest.csv");
+    for (auto* backupItem : backupItems) {
+        stringstream fileStream;
+        fileStream << backupItem->fileID << ";";
+        fileStream << backupItem->domain << ";";
+        if (backupItem->relativePath.empty())
+            fileStream << "\"\";";
+        else
+            fileStream << backupItem->relativePath << ";";;
+        fileStream << backupItem->flags << ";";
+        infoFile << fileStream.str();
+        // infoFile << "size: " << backupItem->fileBlob->size();           
+        for (vector<unsigned char>::const_iterator \
+          i = backupItem->fileBlob->begin(); i != backupItem->fileBlob->end(); ++i) {
+    	    infoFile << *i;
+        }
+        infoFile << endl;
+    }
+    infoFile.close();
+    m_ContextId = m_Statusbar.push(_("CSV file exported"), m_ContextId);
+ }
 
 void ManifestDBWindow::on_button_quit() {
     hide();
@@ -343,7 +376,7 @@ void ManifestDBWindow::on_about_dialog_response(int response_id) {
             m_Dialog.hide();
             break;
         default:
-            m_ContextId = m_Statusbar.push("unexpected response", m_ContextId);
+            m_ContextId = m_Statusbar.push(_("unexpected response"), m_ContextId);
             break;
     }
 }
@@ -382,9 +415,10 @@ void ManifestDBWindow::on_combo_changed() {
                     row[m_TableColumns.m_tablecol_path] = domainItem->relativePath;
                     row[m_TableColumns.m_tablecol_flags] = domainItem->flags;
                 }
-
+                m_ContextId = m_Statusbar.push(_("content of choosen domain displayed"), m_ContextId);
                 m_VBox.pack_start(m_ScrolledWindow);
                 m_VBox.pack_end(m_TextWindow);
+                m_VBox.pack_end(m_HBoxBottom, Gtk::PACK_SHRINK);
                 m_VBox.set_border_width(8);
                 add(m_VBox);
                 show_all_children();
@@ -398,14 +432,14 @@ void ManifestDBWindow::on_entry_activate() {
     Glib::ustring small = m_ComboEntry->get_text();
     auto children = m_refComboTreeModel->children();
     int first_match = 0;
-    m_ContextId = m_Statusbar.push("no match found for entry", m_ContextId);
+    m_ContextId = m_Statusbar.push(_("no match found for entry"), m_ContextId);
     for (auto child : children) {
         Gtk::TreeModel::Row row = *child;
         Glib::ustring domain = row[m_Columns.m_col_domain];
         if (domain.compare(0, small.length(), small) == 0) {
             first_match = row[m_Columns.m_col_id] - 1;
             m_Combo.set_active(first_match);
-            m_ContextId = m_Statusbar.push("first match for entry", m_ContextId);
+            m_ContextId = m_Statusbar.push(_("first match for entry"), m_ContextId);
             break;
         }
     }
@@ -413,13 +447,13 @@ void ManifestDBWindow::on_entry_activate() {
 
 string ManifestDBWindow::choose_folder_for_copying() {
     // Folder for Copying Dialog
-    Gtk::FileChooserDialog dialog("Please choose a folder for copying",
+    Gtk::FileChooserDialog dialog(_("Please choose a folder for copying"),
             Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
     dialog.set_transient_for(*this);
 
     //Add response buttons the the dialog:
-    dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-    dialog.add_button("Select", Gtk::RESPONSE_OK);
+    dialog.add_button(_("Cancel"), Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("Select"), Gtk::RESPONSE_OK);
 
     int result = dialog.run();
 
@@ -432,12 +466,12 @@ string ManifestDBWindow::choose_folder_for_copying() {
         }
         case(Gtk::RESPONSE_CANCEL):
         {
-            m_ContextId = m_Statusbar.push("no file chosen, nothing stored", m_ContextId);
+            m_ContextId = m_Statusbar.push(_("no file chosen, nothing stored"), m_ContextId);
             break;
         }
         default:
         {
-            std::cout << "Unexpected button clicked." << std::endl;
+            std::cout << _("Unexpected button clicked.") << std::endl;
             break;
         }
     }
@@ -463,7 +497,7 @@ void ManifestDBWindow::on_treeview_row_activated(const Gtk::TreeModel::Path& pat
             string copyPath = choose_folder_for_copying();
             if (!copyPath.empty()) {
                 string copyURL = copyPath + "/" + lastComponent;
-                display_status("copyURL: ", copyURL);
+                display_status(_("copyURL: "), copyURL);
                 // copy backup into another file
                 ifstream source(backupURL, ios::binary);
                 if (source) {
@@ -473,12 +507,12 @@ void ManifestDBWindow::on_treeview_row_activated(const Gtk::TreeModel::Path& pat
                     source.close();
                     target.close();
 
-                    display_status("backup copied to new file: ", copyURL);
-                    m_ContextId = m_Statusbar.push("file copying successful", m_ContextId);
+                    display_status(_("backup copied to new file: "), copyURL);
+                    m_ContextId = m_Statusbar.push(_("file copying successful"), m_ContextId);
                 }
                 else {
-                    display_status("cannot find file: ", copyURL);
-                    m_ContextId = m_Statusbar.push("file to copy not found", m_ContextId);
+                    display_status(_("cannot find file: "), copyURL);
+                    m_ContextId = m_Statusbar.push(_("file to copy not found"), m_ContextId);
                 }
             }
         }
