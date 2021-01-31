@@ -23,7 +23,7 @@
 //  Access to SQLite under C++ was realized analogous to the first answer given at
 //  <http://stackoverflow.com/questions/24102775/accessing-an-sqlite-database-in-swift>
 //  The old code (in Swift, now abandoned) was rewritten as of July 25, 2018
-//  now in C++ with the GTK+ wrapper gtkmm, last changes October 2018
+//  now in C++ with the GTK+ wrapper gtkmm, last changes January 2021
 //
 //  Copyright © 2016-2021 Erich Küster. All rights reserved.
 //
@@ -152,7 +152,7 @@ ManifestDBWindow::ManifestDBWindow(const Glib::RefPtr<Gtk::Application>& app)
     m_Dialog.set_logo(Gdk::Pixbuf::create_from_xpm_data(about));
     m_Dialog.set_program_name(app_title);
     m_Dialog.set_size_request(480, -1);
-    m_Dialog.set_version(_("Version 1.1.4"));
+    m_Dialog.set_version(_("Version 1.1.5"));
     m_Dialog.set_copyright("Copyright © 2018-2021 Erich Küster. All rights reserved.");
     m_Dialog.set_comments(_("Read and extract iOS Backup Data Base Manifest.db"));
     std::ifstream licenseFile("LICENSE");

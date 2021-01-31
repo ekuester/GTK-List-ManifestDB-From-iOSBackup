@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([ManifestDBView], [1.1.4], [erich.kuester@arcor.de])
+AC_INIT([ManifestDBView], [1.1.5], [erich.kuester@arcor.de])
 AM_INIT_AUTOMAKE([foreign])
 
 # Checks for programs.

@@ -92,45 +92,31 @@ protected:
 
     // application icon
     std::string icon_svg = "\
-<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\
-<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" enable-background=\"new 0 0 256 256\" width=\"256px\" height=\"256\" version=\"1.1\" viewBox=\"0 0 256 256\" xml:space=\"preserve\">\
-<g>\
-  <path id=\"path1\"\
-  d=\"m227.9 90.788c-15.879 11.527-24.958 26.778-23.626 47.493 1.3287 20.684 12.057 34.656 29.491 43.7-0.71438 2.0937-1.4168 4.2982-2.2111 6.4798-3.8923 10.654-9.0925 20.566-15.422 29.85-2.918 4.2675-5.8164 8.5351-9.202 12.423-3.3516 3.8616-7.0349 7.2826-11.536 9.6448-3.9684 2.0885-8.161 2.976-12.589 2.8131-4.8345-0.18245-9.3405-1.633-13.733-3.6387-3.2226-1.4727-6.4313-2.9728-9.827-3.9776-5.4029-1.5887-10.891-1.908-16.453-1.2538-4.7533 0.56953-9.219 2.1322-13.588 4.0812-3.3611 1.5033-6.6957 3.0646-10.262 4.0004-3.1873 0.83213-6.4124 1.2994-9.7062 0.98461-3.7374-0.35188-7.1287-1.7796-10.287-3.8349-4.3027-2.7955-7.9023-6.4388-11.164-10.439-14.364-17.653-24.497-37.614-29.978-60.122-1.527-6.2837-2.6914-12.623-3.3661-19.074-0.76977-7.3348-0.92272-14.683-0.24421-22.031 0.91705-9.9426 3.2415-19.471 7.7537-28.338 6.3973-12.55 15.771-21.73 28.379-27.156 6.2066-2.6639 12.693-3.9515 19.402-3.8935 4.54 0.03323 8.9351 1.0328 13.201 2.6059 4.2145 1.5659 8.3605 3.3259 12.561 4.9159 2.0915 0.80151 4.2246 1.4922 6.3703 2.1041 3.0986 0.87775 6.1506 0.36687 9.1019-0.75264 3.8923-1.4597 7.7556-3.0353 11.63-4.5666 3.8772-1.545 7.7928-2.9148 11.845-3.8668 4.5412-1.0856 9.1164-1.3469 13.767-0.99244 7.1338 0.55258 13.963 2.284 20.417 5.5252 7.7493 3.9 14.096 9.538 19.02 16.927 0.10197 0.14857 0.19764 0.29714 0.2568 0.38902z\"\
-  clip-rule=\"evenodd\" fill=\"url(#linearGradient4902)\"\
-  fill-rule=\"evenodd\" stroke=\"#008080\" stroke-width=\"1.28\" />\
-  <path id=\"path3\"\
-    d=\"m187.85 12.011c0.0516 1.7268 0.20708 3.4432 0.13721 5.1551-0.52241 14.232-5.9637 26.166-15.606 36.048-4.5809 4.6924-9.985 8.1265-16.088 10.292-3.9804 1.4101-8.0722 2.0794-12.289 1.8611-0.43115-0.02541-0.54319-0.18311-0.59102-0.6171-0.80817-7.832 0.8025-15.199 3.8992-22.264 6.3615-14.49 16.978-23.941 31.392-28.836 2.6158-0.8771 5.3003-1.4101 8.0426-1.6349 0.32792-0.02998 0.65459-0.0039 1.1027-0.0039z\"\
-    clip-rule=\"evenodd\" fill=\"url(#linearGradient4910)\"\
-    fill-rule=\"evenodd\" stroke=\"#008080\" stroke-width=\"1.28\" />\
-  <text id=\"text49\" transform=\"scale(.99995 1.0001)\"\
-    x=\"23.444899\" y=\"172.85513\" fill=\"#ff2a2a\"\
-    font-family=\"'Noto Sans'\" font-size=\"93.655px\" font-weight=\"700\"\
-    letter-spacing=\"0\" stroke-width=\"2.5093\" word-spacing=\"0\" style=\"line-height:1.25\">\
-    <tspan id=\"tspan47\" x=\"23.444899\" y=\"172.85513\" fill=\"#ff2a2a\"\
-      font-size=\"107.03px\" stroke-width=\"9.0442\">iOS\
-    </tspan>\
-  </text>\
-  <text id=\"text47\" transform=\"scale(.99995 1.0001)\"\
-    x=\"42.206013\" y=\"213.31171\" fill=\"#ff2a2a\"\
-    font-family=\"'Noto Sans'\" font-size=\"48px\" font-weight=\"700\"\
-    letter-spacing=\"0\" stroke-width=\"2.5093\" word-spacing=\"0\" style=\"line-height:1.25\">\
-    <tspan id=\"tspan48\" x=\"42.206013\" y=\"213.31171\" fill=\"#ff2a2a\"\
-      font-size=\"48px\" stroke-width=\"9.0442\">Backup\
-    </tspan>\
-  </text></g>\
-  <linearGradient id=\"linearGradient4902\" x1=\"53.129\" x2=\"234.55\"\
-      y1=\"155.64\" y2=\"155.64\" gradientUnits=\"userSpaceOnUse\">\
-    <stop id=\"stop4896\" stop-color=\"#008080\" offset=\"0\" />\
-    <stop id=\"stop4898\" stop-color=\"#008080\" stop-opacity=\"0\"\
-      offset=\"1\" />\
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>\
+<svg id=\"svg154\" width=\"256\" height=\"256\" version=\"1.1\" viewBox=\"0 0 256 256\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\
+ <defs id=\"defs142\">\
+  <linearGradient id=\"linearGradient868\" x1=\"98\" x2=\"98\" y1=\"98\" y2=\"195.5\" gradientTransform=\"matrix(1.2308 0 0 1.2308 8.8767 8.7226)\" gradientUnits=\"userSpaceOnUse\">\
+   <stop id=\"stop864\" stop-color=\"#ff0035\" offset=\"0\"/>\
+   <stop id=\"stop866\" stop-color=\"#fd5\" offset=\"1\"/>\
   </linearGradient>\
-  <linearGradient id=\"linearGradient4910\" x1=\"142.57\" x2=\"188.65\"\
-      y1=\"38.703\" y2=\"38.703\" gradientUnits=\"userSpaceOnUse\">\
-    <stop id=\"stop4904\" stop-color=\"#008080\" offset=\"0\" />\
-    <stop id=\"stop4906\" stop-color=\"#008080\" stop-opacity=\"0\"\
-      offset=\"1\" />\
+  <linearGradient id=\"linearGradient862\" x1=\"138.69\" x2=\"221.78\" y1=\"167.91\" y2=\"167.91\" gradientUnits=\"userSpaceOnUse\" xlink:href=\"#linearGradient868\"/>\
+  <linearGradient id=\"linearGradient887\" x1=\"93.205\" x2=\"128.06\" y1=\"140.09\" y2=\"98.375\" gradientTransform=\"translate(-3.0196)\" gradientUnits=\"userSpaceOnUse\" xlink:href=\"#linearGradient868\"/>\
+  <linearGradient id=\"linearGradient893\" x1=\"105.77\" x2=\"103.04\" y1=\"35.507\" y2=\"16.058\" gradientTransform=\"matrix(.29209 0 0 3.4236 12.98 1.357)\" gradientUnits=\"userSpaceOnUse\" xlink:href=\"#linearGradient868\"/>\
+  <linearGradient id=\"linearGradient895\" x1=\"149.64\" x2=\"201.03\" y1=\"47.501\" y2=\"108.7\" gradientTransform=\"matrix(.82996 0 0 1.2049 12.98 1.357)\" gradientUnits=\"userSpaceOnUse\">\
+   <stop id=\"stop121\" stop-color=\"#ffb380\" offset=\"0\"/>\
+   <stop id=\"stop123\" stop-color=\"#ff2a2a\" offset=\"1\"/>\
   </linearGradient>\
+  <filter id=\"filter854\" x=\"-.072\" y=\"-.072\" width=\"1.144\" height=\"1.144\" color-interpolation-filters=\"sRGB\">\
+   <feGaussianBlur id=\"feGaussianBlur856\" stdDeviation=\"3.5141602\"/>\
+  </filter>\
+ </defs>\
+ <rect id=\"rect1206\" x=\"8.1453\" y=\"8.1453\" width=\"240\" height=\"240\" rx=\"32\" ry=\"32\" fill=\"#fff\" fill-opacity=\".93891\" stroke=\"#e9e5e5\" stroke-width=\"3.7795\"/>\
+ <path id=\"path146\" d=\"m45.862 138.9h-4.5633v-60.979h4.5633zm-2.3466-75.927c-1.9244 0-3.5158-1.5265-3.5158-3.4509 0-1.9812 1.5833-3.5158 3.5158-3.5158 1.9812 0 3.5564 1.5265 3.5564 3.5158 0 1.9244-1.5752 3.4509-3.5564 3.4509z\" fill=\"url(#linearGradient893)\" fill-rule=\"evenodd\"/>\
+ <path id=\"path148\" d=\"m90.185 140.09c-22.313 0-36.409-16.248-36.409-42.076 0-25.699 14.161-42.011 36.409-42.011s36.401 16.313 36.401 42.011c0 25.829-14.096 42.076-36.401 42.076zm0-79.89c-19.422 0-31.821 14.664-31.821 37.813 0 23.166 12.456 37.887 31.821 37.887 19.422 0 31.821-14.721 31.821-37.887 0-23.157-12.399-37.813-31.821-37.813z\" fill=\"url(#linearGradient887)\" fill-rule=\"evenodd\"/>\
+ <path id=\"path150\" d=\"m159.08 140.09c-16.751 0-28.76-9.4595-29.442-22.987h4.474c0.68206 11.092 11.1 18.854 25.309 18.854 13.868 0 23.547-7.8761 23.547-18.513 0-8.5582-5.7731-13.479-19.471-16.93l-9.6787-2.3791c-15.111-3.8569-21.972-9.971-21.972-20.21 0-12.74 11.895-21.915 26.787-21.915 15.395 0 26.892 9.0616 27.404 21.063h-4.474c-0.62522-9.7924-10.19-16.93-23.044-16.93-12.293 0-22.086 7.3646-22.086 17.668 0 8.1603 6.0005 12.854 19.13 16.134l9.1184 2.3222c15.793 3.9056 22.873 9.971 22.873 20.835 0 13.527-11.376 22.987-28.476 22.987z\" fill=\"url(#linearGradient895)\" fill-rule=\"evenodd\"/>\
+ <text id=\"text1188\" x=\"-110.63005\" y=\"153.78233\" fill=\"#000000\" font-family=\"sans-serif\" font-size=\"40px\" style=\"line-height:1.25\" xml:space=\"preserve\"><tspan id=\"tspan1186\" x=\"-110.63005\" y=\"153.78233\"/></text>\
+ <text id=\"text1192\" x=\"87.968163\" y=\"180.4267\" fill=\"url(#linearGradient862)\" font-family=\"sans-serif\" font-size=\"42.667px\" style=\"line-height:1.25;mix-blend-mode:normal\" xml:space=\"preserve\"><tspan id=\"tspan1190\" x=\"87.968163\" y=\"180.4267\" fill=\"url(#linearGradient862)\" font-family=\"'Noto Sans'\" font-size=\"42.667px\">Backup</tspan></text>\
+ <path id=\"path849\" transform=\"matrix(2 0 0 2 .14531 .14531)\" d=\"m117.14 6.8613c1.8003 2.5889 2.8613 5.7328 2.8613 9.1387v88c0 8.864-7.136 16-16 16h-88c-3.4059 0-6.5498-1.061-9.1387-2.8613 2.8851 4.1488 7.6806 6.8613 13.139 6.8613h88c8.864 0 16-7.136 16-16v-88c0-5.4581-2.7126-10.254-6.8613-13.139z\" filter=\"url(#filter854)\" opacity=\".36\"/>\
 </svg>";
 
     // child widgets
