@@ -1,4 +1,4 @@
-# Translations for GTK-List_ManifestDB-from-iOSBackup.
+# Translations for GTK-List_ManifestDB-from-iOSBackup, german version.
 # Copyright (C) 2018-2021 Erich Küster
 # This file is distributed under the same license as the PACKAGE package.
 # Erich Küster <erich.kuester@arcor.de>, 2021.
@@ -9,57 +9,58 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-31 19:03+0100\n"
-"PO-Revision-Date: 2021-02-02 17:39+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2021-02-01 11:02+0100\n"
+"Last-Translator: <erich.kuester@arcor.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type:  text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: manifestDBwindow.cpp:69
 msgid "About program"
-msgstr ""
+msgstr "Programm Info"
 
 #: manifestDBwindow.cpp:201
 msgid "Any files"
-msgstr ""
+msgstr "Alle Dateien"
 
 #: manifestDBwindow.cpp:368
 msgid "CSV file successfully exported"
-msgstr ""
+msgstr "Export der CSV Datei erfolgreich"
 
 #: manifestDBwindow.cpp:329
 msgid "Can't open database"
-msgstr ""
+msgstr "Kann Datenbank nicht öffnen"
 
 #: manifestDBwindow.cpp:191 manifestDBwindow.cpp:472
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: manifestDBwindow.cpp:196
 msgid "Database files"
-msgstr ""
+msgstr "Datenbank Dateien"
 
 #: manifestDBwindow.cpp:66
 msgid "Exit program"
-msgstr ""
+msgstr "Programm verlassen"
 
 #: manifestDBwindow.cpp:44
 msgid "Export CSV..."
-msgstr ""
+msgstr "CSV Export..."
 
 #: manifestDBwindow.cpp:119
 msgid "File Flags"
-msgstr ""
+msgstr "Dateibanner"
 
 #: manifestDBwindow.cpp:117
 msgid "File ID"
-msgstr ""
+msgstr "Datei ID"
 
 #: manifestDBwindow.cpp:118
 msgid "File Path"
-msgstr ""
+msgstr "Dateipfad"
 
 #: manifestDBwindow.cpp:34
 msgid "Gtk+: iOS Backup - Read Manifest.db"
@@ -67,39 +68,39 @@ msgstr ""
 
 #: manifestDBwindow.cpp:192
 msgid "Open"
-msgstr ""
+msgstr "Öffnen"
 
 #: manifestDBwindow.cpp:63
 msgid "Open data base"
-msgstr ""
+msgstr "Öffne Datenbank"
 
 #: manifestDBwindow.cpp:514
 msgid "Please choose a folder for copying"
-msgstr ""
+msgstr "Verzeichnis zum Kopieren auswählen"
 
 #: manifestDBwindow.cpp:342
 msgid "Please choose a folder for export"
-msgstr ""
+msgstr "Verzeichnis für Export auswählen"
 
 #: manifestDBwindow.cpp:304
 msgid "Please select domain to display"
-msgstr ""
+msgstr "Domain zur Anzeige auswählen"
 
 #: manifestDBwindow.cpp:157
 msgid "Read and extract iOS Backup Data Base Manifest.db"
-msgstr ""
+msgstr "Auslesen der iOS Sicherungsdatenbank Manifest.db"
 
 #: manifestDBwindow.cpp:473
 msgid "Select"
-msgstr ""
+msgstr "Auswählen"
 
 #: manifestDBwindow.cpp:186
 msgid "Select Manifest.db file"
-msgstr ""
+msgstr "Manifest.db Datei auswählen"
 
 #: manifestDBwindow.cpp:491
 msgid "Unexpected button clicked."
-msgstr ""
+msgstr "Unerwartete Schaltfläche geklickt"
 
 #: manifestDBwindow.cpp:155
 msgid "Version 1.1.5"
@@ -107,80 +108,81 @@ msgstr ""
 
 #: manifestDBwindow.cpp:367
 msgid "backup copied to csv file: "
-msgstr ""
+msgstr "Backup kopiert in csv Datei: "
 
 #: manifestDBwindow.cpp:527
 msgid "backup copied to new file: "
-msgstr ""
+msgstr "Sicherung kopiert in Datei: "
 
 #: manifestDBwindow.cpp:237
 msgid "backup data base was found at: "
-msgstr ""
+msgstr "Sicherungsdatenbank gefunden: "
 
 #: manifestDBwindow.cpp:371 manifestDBwindow.cpp:531
 msgid "cannot locate file: "
-msgstr ""
+msgstr "nicht vorhandene Datei: "
 
 #: manifestDBwindow.cpp:145
 msgid "choose a data base, click Open"
-msgstr ""
+msgstr "Datenbank auswählen, Öffnen klicken"
 
 #: manifestDBwindow.cpp:434
 msgid "content of choosen domain displayed"
-msgstr ""
+msgstr "Inhalt der ausgewählten Domain in Anzeige"
 
 #: manifestDBwindow.cpp:517
 msgid "copyURL: "
-msgstr ""
+msgstr "KopierURL"
 
 #: manifestDBwindow.cpp:372
 msgid "csv file for export not found"
-msgstr ""
+msgstr "csv Datei zum Export nicht gefunden"
 
 #: manifestDBwindow.cpp:334
 msgid "data base closed after reading"
-msgstr ""
+msgstr "Datenbank nach Auslesen geschlossen"
 
 #: manifestDBwindow.cpp:325
 msgid "error finalizing prepared statement: "
-msgstr ""
+msgstr "Fehler beim Abschluss des Statement Befehls"
 
 #: manifestDBwindow.cpp:250
 msgid "error preparing select: "
-msgstr ""
+msgstr "Fehler beim Select Befehl"
 
 #: manifestDBwindow.cpp:345
 msgid "exportURL: "
-msgstr ""
+msgstr "ExportURL"
 
 #: manifestDBwindow.cpp:528
 msgid "file copying successful"
-msgstr ""
+msgstr "Dateikopie erfolgreich"
 
 #: manifestDBwindow.cpp:532
 msgid "file to copy not found"
-msgstr ""
+msgstr "Datei zum Kopieren nicht gefunden"
 
 #: manifestDBwindow.cpp:458
 msgid "first match for entry"
-msgstr ""
+msgstr "Erster Treffer für Eingabe"
 
 #: manifestDBwindow.cpp:218
 msgid "no data base chosen"
-msgstr ""
+msgstr "Keine Datenbank ausgewählt"
 
 #: manifestDBwindow.cpp:486
 msgid "no file chosen, nothing stored"
-msgstr ""
+msgstr "Keine Datei gewählt, nichts gespeichert"
 
 #: manifestDBwindow.cpp:451
 msgid "no match found for entry"
-msgstr ""
+msgstr "Kein Treffer für Eingabe"
 
 #: manifestDBwindow.cpp:223
 msgid "unexpected button clicked."
-msgstr ""
+msgstr "Unerwartete Schaltfläche geklickt."
 
 #: manifestDBwindow.cpp:395
 msgid "unexpected response"
-msgstr ""
+msgstr "Unerwartete Antwort"
+

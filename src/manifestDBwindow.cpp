@@ -125,7 +125,7 @@ ManifestDBWindow::ManifestDBWindow(const Glib::RefPtr<Gtk::Application>& app)
     for ( auto* column : m_TreeView.get_columns() ) {
         column->set_reorderable();
         column->set_resizable(true);
-        //column->set_alignment(Gtk::ALIGN_FILL);
+        column->set_alignment(Gtk::ALIGN_FILL);
     }
     //Connect signal handler
     m_TreeView.signal_row_activated().connect(sigc::mem_fun(*this, \
@@ -289,20 +289,24 @@ void ManifestDBWindow::on_button_open() {
                 //cout << "added " << filteredItems.size() << " filtered items" << endl;
                 sort(filteredItems.begin(), filteredItems.end());
                 //fill the ComboBox's Tree Model
-                Gtk::TreeModel::Row row = *(m_refComboTreeModel->append());
-                row[m_Columns.m_col_id] = 1;
-                row[m_Columns.m_col_domain] = _("Please select domain to display");
+//                Gtk::TreeModel::Row row = *(m_refComboTreeModel->append());
+//                row[m_Columns.m_col_id] = 1;
+//                row[m_Columns.m_col_domain] = _("Please select domain to display");
+//                m_ComboEntry->set_direction(Gtk::TEXT_DIR_LTR);
+//                m_ComboEntry->set_editable(true);
+//                m_ComboEntry->set_sensitive(true);
                 //remove child(ren) from main window
                 remove();
                 m_VBox.remove(m_HBoxBottom);
                 m_VBox.remove(m_HBoxCombo);
                 m_HBoxCombo.remove(m_Combo);
-                // first row is active
+                // first row with placeholder text is active
+                m_ComboEntry->set_placeholder_text(_("Please select domain to display"));
                 m_Combo.set_active(0);
                 // add the combobox to a horizontal box, horizontally centered
                 m_HBoxCombo.pack_start(m_Combo, Gtk::PACK_EXPAND_WIDGET);
-                // add combobox row for every backupItem object
-                int i = 2;
+                // for every backupItem object add a combobox row to combobox's tree model
+                int i = 1;
                 for (auto filteredItem : filteredItems) {
                     Gtk::TreeModel::Row row = *(m_refComboTreeModel->append());
                     row[m_Columns.m_col_id] = i++;
@@ -327,36 +331,48 @@ void ManifestDBWindow::on_button_open() {
         //close database
         if (sqliteDB) {
             sqlite3_close(sqliteDB);
-            m_ContextId = m_Statusbar.push(_("data base closed"), m_ContextId);
+            m_ContextId = m_Statusbar.push(_("data base closed after reading"), m_ContextId);
         }
     }
 }
 
+// export data records into .csv file
 void ManifestDBWindow::on_button_write_csv() {
-    // export data records into .csv file
-    ofstream infoFile;
-    // simple beginning: save file in same directory
-    infoFile.open("Manifest.csv");
-    for (auto* backupItem : backupItems) {
-        stringstream fileStream;
-        fileStream << backupItem->fileID << ";";
-        fileStream << backupItem->domain << ";";
-        if (backupItem->relativePath.empty())
-            fileStream << "\"\";";
-        else
-            fileStream << backupItem->relativePath << ";";;
-        fileStream << backupItem->flags << ";";
-        infoFile << fileStream.str();
-        // infoFile << "size: " << backupItem->fileBlob->size();           
-        for (vector<unsigned char>::const_iterator \
-          i = backupItem->fileBlob->begin(); i != backupItem->fileBlob->end(); ++i) {
-    	    infoFile << *i;
+    // select folder for export
+    string exportPath = choose_folder_for_saving(_("Please choose a folder for export"));
+    if (!exportPath.empty()) {
+        string exportURL = exportPath + "/" + "Manifest.csv";
+        display_status(_("exportURL: "), exportURL);
+        // copy backup into CSV file
+        ofstream infoFile(exportURL, ios::binary);
+        if (infoFile.is_open()) {
+            for (auto* backupItem : backupItems) {
+                stringstream fileStream;
+                fileStream << backupItem->fileID << ";";
+                fileStream << backupItem->domain << ";";
+                if (backupItem->relativePath.empty())
+                    fileStream << "\"\";";
+                else
+                    fileStream << backupItem->relativePath << ";";;
+                fileStream << backupItem->flags << ";";
+                infoFile << fileStream.str();
+                // infoFile << "size: " << backupItem->fileBlob->size();           
+                for (vector<unsigned char>::const_iterator \
+                  i = backupItem->fileBlob->begin(); i != backupItem->fileBlob->end(); ++i) {
+            	    infoFile << *i;
+                }
+                infoFile << endl;
+            }
+            infoFile.close();
+            display_status(_("backup copied to csv file: "), exportURL);
+            m_ContextId = m_Statusbar.push(_("CSV file successfully exported"), m_ContextId);
+        }    
+        else {
+            display_status(_("cannot locate file: "), exportURL);
+            m_ContextId = m_Statusbar.push(_("csv file for export not found"), m_ContextId);
         }
-        infoFile << endl;
     }
-    infoFile.close();
-    m_ContextId = m_Statusbar.push(_("CSV file exported"), m_ContextId);
- }
+}
 
 void ManifestDBWindow::on_button_quit() {
     hide();
@@ -443,11 +459,12 @@ void ManifestDBWindow::on_entry_activate() {
             break;
         }
     }
+    on_combo_changed();
 }
 
-string ManifestDBWindow::choose_folder_for_copying() {
+string ManifestDBWindow::choose_folder_for_saving(string dialog_title) {
     // Folder for Copying Dialog
-    Gtk::FileChooserDialog dialog(_("Please choose a folder for copying"),
+    Gtk::FileChooserDialog dialog(dialog_title,
             Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
     dialog.set_transient_for(*this);
 
@@ -494,7 +511,7 @@ void ManifestDBWindow::on_treeview_row_activated(const Gtk::TreeModel::Path& pat
             string backupURL = pathURL + "/" + hash + "/" + fileID;
             display_status("backupURL: ", backupURL);
             string lastComponent = relativePath.substr(relativePath.find_last_of("/\\") + 1);
-            string copyPath = choose_folder_for_copying();
+            string copyPath = choose_folder_for_saving(_("Please choose a folder for copying"));
             if (!copyPath.empty()) {
                 string copyURL = copyPath + "/" + lastComponent;
                 display_status(_("copyURL: "), copyURL);
@@ -511,7 +528,7 @@ void ManifestDBWindow::on_treeview_row_activated(const Gtk::TreeModel::Path& pat
                     m_ContextId = m_Statusbar.push(_("file copying successful"), m_ContextId);
                 }
                 else {
-                    display_status(_("cannot find file: "), copyURL);
+                    display_status(_("cannot locate file: "), copyURL);
                     m_ContextId = m_Statusbar.push(_("file to copy not found"), m_ContextId);
                 }
             }

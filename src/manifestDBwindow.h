@@ -50,7 +50,7 @@ private:
 protected:
     //Functions
     std::string choose_database_file();
-    std::string choose_folder_for_copying();
+    std::string choose_folder_for_saving(string dialog_title);
 
     template< typename ... Args >
     void display_status(Args const& ... args);
